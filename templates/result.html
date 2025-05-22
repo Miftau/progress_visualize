@@ -4,11 +4,19 @@
     <meta charset="UTF-8">
     <title>Analysis Results</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
-        .plot-img {
+        .plot-container {
             max-width: 100%;
             height: auto;
             margin-bottom: 20px;
+            display: none;
+        }
+        .download-btn {
+            margin-top: 10px;
+        }
+        .plot-container.active {
+            display: block;
         }
     </style>
 </head>
@@ -22,13 +30,46 @@
         </div>
 
         <h3 class="mt-5">Visualizations</h3>
-        {% for plot_type, col_name, base64_string in plots %}
-            <h4>{{ plot_type|title }} for {{ col_name }}</h4>
-            <img src="data:image/png;base64,{{ base64_string }}" class="plot-img" alt="{{ plot_type }} for {{ col_name }}">
-            <a href="data:image/png;base64,{{ base64_string }}" download="{{ plot_type }}_{{ col_name }}.png" class="btn btn-primary btn-sm mb-3">Download {{ plot_type|title }}</a>
+        <!-- Initialize plot_types before using it -->
+        {% set plot_types = [] %}
+        <div class="mb-3">
+            <label for="plotFilter" class="form-label">Filter by Plot Type</label>
+            <select id="plotFilter" class="form-select">
+                <option value="all">All Plots</option>
+                {% for plot_type, _, _, _ in plots %}
+                    {% if plot_type not in plot_types %}
+                        <option value="{{ plot_type }}">{{ plot_type|title }}</option>
+                        {% set _ = plot_types.append(plot_type) %}
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+        {% for plot_type, col_name, plot_html, png_base64 in plots %}
+            <div class="plot-container {{ plot_type }}" data-plot-type="{{ plot_type }}">
+                <h4>{{ plot_type|title }} for {{ col_name }}</h4>
+                {{ plot_html|safe }}
+                <a href="data:image/png;base64,{{ png_base64 }}" download="{{ plot_type }}_{{ col_name }}.png" class="btn btn-primary btn-sm download-btn">Download {{ plot_type|title }}</a>
+            </div>
         {% endfor %}
 
         <a href="/" class="btn btn-secondary mt-4">Back</a>
     </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#plotFilter').change(function() {
+                var selected = $(this).val();
+                if (selected === 'all') {
+                    $('.plot-container').addClass('active').show();
+                } else {
+                    $('.plot-container').removeClass('active').hide();
+                    $('.' + selected).addClass('active').show();
+                }
+            });
+            // Show all plots by default
+            $('.plot-container').addClass('active').show();
+        });
+    </script>
 </body>
 </html>

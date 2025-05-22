@@ -24,6 +24,21 @@
                 <textarea name="raw_data" class="form-control" rows="6" placeholder="col1,col2\n1,2\n3,4"></textarea>
             </div>
 
+            <div class="mb-3">
+                <label class="form-label">Sample Size (for large datasets)</label>
+                <input type="number" name="sample_size" class="form-control" value="100000" min="1000" max="1000000">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Plot Width (pixels)</label>
+                <input type="number" name="plot_width" class="form-control" value="800" min="400" max="2000">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Plot Height (pixels)</label>
+                <input type="number" name="plot_height" class="form-control" value="600" min="300" max="1500">
+            </div>
+
             <button type="submit" class="btn btn-primary">Analyze Data</button>
         </form>
     </div>
