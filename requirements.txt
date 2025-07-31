@@ -7,3 +7,4 @@ plotly~=6.1.1
 Jinja2~=3.1.6
 gunicorn
 kaleido
+openpyxl
