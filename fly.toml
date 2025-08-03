@@ -21,6 +21,6 @@ PORT = "8080"
 
   [[services.tcp_checks]]
     interval = "10s"
-    timeout = "7s"
-    grace_period = "10s"
+    timeout = "560s"
+    grace_period = "190s"
     restart_limit = 0
