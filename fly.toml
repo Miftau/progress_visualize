@@ -20,7 +20,7 @@ PORT = "8080"
     port = 443
 
   [[services.tcp_checks]]
-    interval = "10s"
+    interval = "1000s"
     timeout = "560s"
     grace_period = "190s"
     restart_limit = 0
